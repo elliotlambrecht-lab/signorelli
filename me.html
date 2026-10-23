@@ -195,6 +195,8 @@ function login(msg){
 }
 (async()=>{let c=null;const hc=decodeURIComponent((location.hash||'').slice(1)).replace(/^code=/,'');
   if(hc){try{history.replaceState(null,'',location.pathname)}catch(e){}}
+  let c1=null;try{c1=sessionStorage.getItem('sgcode1');sessionStorage.removeItem('sgcode1')}catch(e){}
+  if(c1){try{const me=await unlock(c1);if(me)return view(me,'me')}catch(e){} return login('That code was not found. Check it and try again.')}
   if(hc.replace(/[^A-Za-z0-9]/g,'').length===12){try{const me=await unlock(hc);if(me)return view(me,'me')}catch(e){} return login('This link did not work. Type your code below or ask your shop manager.')}
   if(hc) return login('That code is too short. A code has 12 letters and numbers.');
   try{c=localStorage.getItem('sgcode')}catch(e){}
